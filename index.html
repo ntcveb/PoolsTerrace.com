@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AquaPolis — будівництво басейнів під ключ</title>
+  <meta name="description" content="AquaPolis — проєктування, будівництво та обслуговування басейнів під ключ. Безкоштовна консультація та попередній кошторис." />
+  <meta name="theme-color" content="#0EA5A4" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#0EA5A4;
+      --accent:#0B4F6C;
+      --sand:#F4EDE0;
+      --bg:#F7F9FB;
+      --text:#1F2937;
+      --muted:#6B7280;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.7);
+      --radius:14px;
+      --shadow: 0 10px 30px rgba(15,23,42,0.08);
+      --overlay: rgba(11,79,108,0.72);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg,var(--bg),#ffffff);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    a{color:var(--accent); text-decoration:none}
+    header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+      border-bottom:1px solid rgba(15,23,42,0.04);
+    }
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:Montserrat;
+      box-shadow:var(--shadow);
+      font-size:18px;
+    }
+    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
+    nav li a{font-weight:600;color:var(--text)}
+    .cta{background:var(--primary);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;box-shadow:0 8px 22px rgba(14,165,164,0.18)}
+    /* Hero */
+    .hero{padding:64px 0;display:grid;grid-template-columns:1fr 480px;gap:32px;align-items:center}
+    .hero-left h1{font-family:Montserrat;font-size:44px;margin:0 0 12px;color:var(--accent)}
+    .hero-left p{margin:0 0 18px;color:var(--muted);font-size:18px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .service-item{background:linear-gradient(180deg,var(--glass),#fff);padding:12px;border-radius:10px;text-align:center}
+    .service-item h4{margin:8px 0 0;font-size:14px}
+    /* Sections */
+    section{padding:48px 0}
+    h2{font-family:Montserrat;color:var(--accent);margin:0 0 18px;font-size:28px}
+    .lead{color:var(--muted);margin-bottom:18px}
+    /* Services list */
+    .services-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .service-card{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:12px;background:linear-gradient(180deg,#fff,var(--sand));box-shadow:var(--shadow)}
+    .service-card .icon{width:56px;height:56px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .service-card h3{margin:0;font-size:18px}
+    .service-card p{margin:6px 0 0;color:var(--muted)}
+    /* Portfolio */
+    .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .portfolio-item{position:relative;border-radius:12px;overflow:hidden;min-height:220px;background:#ddd;cursor:pointer;transition:transform .28s ease}
+    .portfolio-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .portfolio-item:hover img{transform:scale(1.06)}
+    .portfolio-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.0),rgba(0,0,0,0.45));opacity:0;transition:opacity .28s ease;display:flex;align-items:flex-end;padding:16px}
+    .portfolio-item:hover .portfolio-overlay{opacity:1}
+    .portfolio-caption{color:#fff;font-weight:700}
+    .portfolio-desc{color:#fff;opacity:0;transform:translateY(8px);transition:all .28s ease}
+    .portfolio-item:hover .portfolio-desc{opacity:1;transform:translateY(0)}
+    /* Slideouts and modals */
+    .calc-btn{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#fff;padding:12px 16px;border-radius:12px;z-index:1200;box-shadow:0 10px 30px rgba(11,79,108,0.2)}
+    .slideout{position:fixed;right:0;top:0;height:100%;width:460px;background:linear-gradient(180deg,#fff,var(--sand));box-shadow:-20px 0 40px rgba(15,23,42,0.08);transform:translateX(110%);transition:transform .36s ease;z-index:1300;padding:20px;overflow:auto}
+    .slideout.open{transform:translateX(0)}
+    .slideout.left{left:0;right:auto;transform:translateX(-110%);box-shadow:20px 0 40px rgba(15,23,42,0.08)}
+    .slideout.left.open{transform:translateX(0)}
+    .close-slide{background:transparent;border:0;font-size:20px;cursor:pointer;color:var(--muted)}
+    .input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);font-size:14px}
+    .btn{background:var(--primary);color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    /* Multiple slideouts styling */
+    .slide-section{margin-top:12px}
+    .slide-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px}
+    /* FAQ */
+    .faq-item{background:#fff;border-radius:10px;padding:12px;margin-bottom:10px;box-shadow:var(--shadow)}
+    .faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .faq-a{margin-top:8px;color:var(--muted);display:none}
+    .faq-a.open{display:block}
+    /* Footer */
+    footer{background:#0B4F6C;color:#fff;padding:28px 0;margin-top:40px}
+    footer a{color:#fff}
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr; padding:36px 0}
+      .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+      .services-list{grid-template-columns:1fr}
+      .slideout{width:100%}
+    }
+    @media (max-width:640px){
+      nav ul{display:none}
+      .hero-left h1{font-size:28px}
+      .portfolio-grid{grid-template-columns:1fr}
+    }
+    /* helpers */
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .pill{display:inline-block;padding:6px 10px;background:rgba(14,165,164,0.08);color:var(--accent);border-radius:999px;font-weight:700}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .gallery-grid img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+    .slide-indicator{display:flex;gap:8px;align-items:center;margin-top:12px}
+    .dot{width:10px;height:10px;border-radius:50%;background:rgba(15,23,42,0.08)}
+    .dot.active{background:var(--accent)}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">AP</div>
+      <div>
+        <div style="font-weight:800">AquaPolis</div>
+        <div class="small muted">Басейни під ключ • Сервіс • Ремонт • <strong>Гарантія</strong></div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#services">Послуги</a></li>
+        <li><a href="#portfolio">Портфоліо</a></li>
+        <li><a href="#service">Обслуговування</a></li>
+        <li><a href="#blog">Блог</a></li>
+        <li><a href="#contacts">Контакти</a></li>
+      </ul>
+    </nav>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a class="cta" href="#contacts" title="Замовити консультацію">Отримати консультацію</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container hero">
+    <div class="hero-left">
+      <h1>AquaPolis — ваш басейн мрії</h1>
+      <p class="lead">Ми створюємо басейни, які поєднують естетику, інженерію та довговічність. Проєктування, будівництво, оздоблення та сервіс — все під ключ.</p>
+      <div class="hero-actions">
+        <button class="btn" onclick="openModal('modalContact')">Отримати консультацію</button>
+        <button class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="openSlide('calcSlide')">Розрахувати вартість</button>
+        <button class="btn" style="background:var(--accent);margin-left:6px" onclick="openSlide('gallerySlide')">Галерея</button>
+      </div>
+
+      <section style="margin-top:22px">
+        <h2>Чому AquaPolis</h2>
+        <p class="muted">Ми поєднуємо інженерну точність та дизайнерське бачення. Кожен проєкт — індивідуальний, з урахуванням ландшафту, бюджету та побажань клієнта.</p>
+        <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+          <div class="pill">Під ключ</div>
+          <div class="pill">Гарантія</div>
+          <div class="pill">Енергоефективність</div>
+          <div class="pill">3D‑візуалізація</div>
+        </div>
+      </section>
+
+      <section id="services" style="margin-top:28px">
+        <h2>Послуги — повний спектр робіт</h2>
+        <p class="lead">Ми пропонуємо комплексні рішення для приватних і комерційних об’єктів: від концепції до сервісу після запуску.</p>
+
+        <div class="services-list">
+          <div class="service-card">
+            <div class="icon">P</div>
+            <div>
+              <h3>Проєктування та інженерія</h3>
+              <p>Глибокий аналіз ділянки, геодезія, інженерні розрахунки, 3D‑візуалізація та робочі креслення. Ми підбираємо оптимальні матеріали, системи фільтрації та підігріву з урахуванням клімату та бюджету.</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openSlide('projectSlide')">Деталі та фото</button></div>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="icon">B</div>
+            <div>
+              <h3>Будівництво чаші</h3>
+              <p>Монолітний бетон, композитні та поліпропіленові чаші. Контроль армування, якісна гідроізоляція, тестування на герметичність. Показуємо етапи будівництва з фото та відео.</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openModal('modalBuild')">Процес будівництва</button></div>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="icon">O</div>
+            <div>
+              <h3>Оздоблення та дизайн</h3>
+              <p>Мозаїка, керамограніт, натуральний камінь, декоративні бортики, підсвітка та водні ефекти. Підбираємо матеріали, що витримують експлуатацію та зберігають естетику роками.</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openSlide('finishSlide')">Матеріали та фото</button></div>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="icon">S</div>
+            <div>
+              <h3>Обладнання та автоматика</h3>
+              <p>Системи фільтрації, теплові насоси, насоси високої ефективності, автоматичне дозування хімії, дистанційне керування через мобільний додаток. Підбираємо обладнання під реальні потреби клієнта.</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openModal('modalEquip')">Обладнання</button></div>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="icon">R</div>
+            <div>
+              <h3>Ремонт та реконструкція</h3>
+              <p>Реставрація чаші, заміна гідроізоляції, оновлення оздоблення, модернізація обладнання. Проводимо діагностику та пропонуємо оптимальні рішення з фото «до/після».</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openModal('modalRepair')">Кейси ремонту</button></div>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="icon">M</div>
+            <div>
+              <h3>Малий та мобільний басейн</h3>
+              <p>Компактні рішення для терас і дахів: збірні чаші, мобільні системи фільтрації та естетичне оздоблення. Ідеально для обмежених просторів.</p>
+              <div style="margin-top:8px"><button class="mini-cta" onclick="openSlide('miniSlide')">Приклади</button></div>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:14px;color:var(--muted)">Кожна послуга супроводжується фотозвітом етапів, гарантійним талоном та інструкцією з експлуатації. Ми надаємо повну документацію та післяпродажний сервіс.</p>
+      </section>
+
+    </div>
+
+    <div class="hero-right">
+      <div class="card">
+        <h3 style="margin:0 0 8px">Швидка заявка</h3>
+        <p class="muted small">Залиште контакти — ми зв'яжемося протягом 24 годин</p>
+        <form id="quickForm" onsubmit="submitQuick(event)">
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input class="input" id="qname" placeholder="Ім'я" required>
+            <input class="input" id="qphone" placeholder="Телефон" required>
+          </div>
+          <div style="margin-top:10px">
+            <select id="qservice" class="input">
+              <option value="Проєкт">Проєкт</option>
+              <option value="Будівництво">Будівництво</option>
+              <option value="Сервіс">Сервіс</option>
+            </select>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn" type="submit">Надіслати</button>
+            <button type="button" class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="openModal('modalContact')">Детальніше</button>
+          </div>
+        </form>
+        <div style="margin-top:12px;font-size:13px;color:var(--muted)">Або зателефонуйте: <strong>+38 (0XX) XXX‑XX‑XX</strong></div>
+      </div>
+
+      <div style="margin-top:16px" class="card">
+        <h4 style="margin:0 0 8px">Швидкі сервіси</h4>
+        <div class="service-grid">
+          <div class="service-item"><strong>Запуск</strong><div class="small muted">Сезонний запуск басейну</div></div>
+          <div class="service-item"><strong>Зимування</strong><div class="small muted">Консервація обладнання</div></div>
+          <div class="service-item"><strong>Діагностика</strong><div class="small muted">Перевірка насосів та фільтрів</div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px" class="card">
+        <h4 style="margin:0 0 8px">Гарантія</h4>
+        <p class="muted small">Ми відповідаємо за якість — Гарантія на конструкцію та виконані роботи.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="container" id="portfolio">
+    <h2>Портфоліо — наші роботи та процес</h2>
+    <p class="lead">Нижче — приклади реалізованих проєктів та фото етапів будівництва. Портфоліо розгортається при прокручуванні, а при наведенні на фото з'являється м’який опис.</p>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Replace image src with your uploaded filenames -->
+      <div class="portfolio-item" data-title="Приватний басейн 8×4 м" data-desc="Мозаїка, підігрів, LED‑підсвітка. Готово за 10 тижнів.">
+        <img src="images/photo1.jpg" alt="Приватний басейн">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Приватний басейн 8×4 м</div>
+            <div class="portfolio-desc small">Мозаїка, підігрів, LED‑підсвітка. Готово за 10 тижнів.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-title="Процес будівництва — армування" data-desc="Етап армування та підготовки до бетонування.">
+        <img src="images/photo2.jpg" alt="Армування">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Армування та бетонування</div>
+            <div class="portfolio-desc small">Етап армування та підготовки до бетонування.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-title="Монтаж обладнання" data-desc="Установка насосів, фільтрів та автоматики.">
+        <img src="images/photo3.jpg" alt="Монтаж обладнання">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Монтаж обладнання</div>
+            <div class="portfolio-desc small">Установка насосів, фільтрів та автоматики.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-title="Інтер'єрний басейн" data-desc="Елегантний внутрішній басейн з мозаїкою та колоннами.">
+        <img src="images/photo4.jpg" alt="Інтер'єрний басейн">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Інтер'єрний басейн</div>
+            <div class="portfolio-desc small">Елегантний внутрішній басейн з мозаїкою та колоннами.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-title="Міні‑басейн на терасі" data-desc="Компактне рішення для тераси з композитною чашею.">
+        <img src="images/photo5.jpg" alt="Міні басейн">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Міні‑басейн на терасі</div>
+            <div class="portfolio-desc small">Компактне рішення для тераси з композитною чашею.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-title="Реконструкція чаші" data-desc="Ремонт та оновлення оздоблення чаші, «до/після».">
+        <img src="images/photo6.jpg" alt="Реконструкція">
+        <div class="portfolio-overlay">
+          <div>
+            <div class="portfolio-caption">Реконструкція чаші</div>
+            <div class="portfolio-desc small">Ремонт та оновлення оздоблення чаші, «до/після».</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+      <button class="btn" onclick="openSlide('portfolioSlide')">Розгорнути портфоліо</button>
+      <div class="slide-indicator">
+        <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="service">
+    <h2>Обслуговування — пакети та індивідуальні рішення</h2>
+    <p class="lead">Підтримка басейну — це регулярна профілактика, яка зберігає його в ідеальному стані. Ми пропонуємо готові пакети та індивідуальні рішення під ваші потреби.</p>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div class="card" style="flex:1;min-width:260px">
+        <h3>Базовий пакет</h3>
+        <p class="muted">Щомісячна перевірка, чистка фільтрів, баланс хімії.</p>
+        <ul class="muted small">
+          <li>Перевірка обладнання</li>
+          <li>Чистка фільтрів</li>
+          <li>Тест хімії</li>
+        </ul>
+        <div style="margin-top:10px"><button class="btn" onclick="openModal('modalService')">Оформити</button></div>
+      </div>
+
+      <div class="card" style="flex:1;min-width:260px">
+        <h3>Преміум пакет</h3>
+        <p class="muted">Щотижневий виїзд, повна діагностика, пріоритетні виїзди.</p>
+        <ul class="muted small">
+          <li>Щотижневий сервіс</li>
+          <li>Діагностика обладнання</li>
+          <li>Знижки на ремонт</li>
+        </ul>
+        <div style="margin-top:10px"><button class="btn" onclick="openModal('modalService')">Оформити</button></div>
+      </div>
+
+      <div class="card" style="flex:1;min-width:260px">
+        <h3>Сезонний пакет</h3>
+        <p class="muted">Запуск навесні, зимування восени, підготовка до сезону.</p>
+        <ul class="muted small">
+          <li>Запуск/зимування</li>
+          <li>Консервація обладнання</li>
+          <li>Планові виїзди</li>
+        </ul>
+        <div style="margin-top:10px"><button class="btn" onclick="openModal('modalService')">Оформити</button></div>
+      </div>
+
+      <div class="card" style="flex:1 1 100%;min-width:260px">
+        <h3>Індивідуальний</h3>
+        <p class="muted">Рішення, що обговорюється при зустрічі: підбір частоти виїздів, обсяг робіт, додаткові послуги (ремонт, модернізація, екстрені виїзди). Ми підготуємо персональну пропозицію після огляду об’єкта.</p>
+        <div style="margin-top:10px"><button class="btn" onclick="openModal('modalService')">Обговорити індивідуально</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="blog">
+    <h2>Блог — поради та кейси</h2>
+    <p class="lead">Корисні статті про догляд, енергоефективність та дизайн басейнів. Читайте докладні інструкції та дивіться кейси з фото.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <article class="card">
+        <h3>Як підготувати басейн до зими</h3>
+        <p class="muted small">Покрокова інструкція: консервація, захист обладнання, хімія.</p>
+        <a href="#" class="small">Читати далі →</a>
+      </article>
+      <article class="card">
+        <h3>Теплові насоси для басейнів</h3>
+        <p class="muted small">Переваги, економія та підбір потужності.</p>
+        <a href="#" class="small">Читати далі →</a>
+      </article>
+      <article class="card">
+        <h3>Мозаїка чи керамограніт</h3>
+        <p class="muted small">Порівняння матеріалів для оздоблення чаші.</p>
+        <a href="#" class="small">Читати далі →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="container" id="faq">
+    <h2>FAQ — Часті питання</h2>
+    <div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><strong>Скільки часу займає будівництво приватного басейну?</strong><span class="small muted">→</span></div>
+        <div class="faq-a muted">Зазвичай 8–16 тижнів залежно від складності, погодних умов та матеріалів.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><strong>Які гарантії ви надаєте?</strong><span class="small muted">→</span></div>
+        <div class="faq-a muted">Гарантія на конструкцію та виконані роботи — деталі в договорі.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><strong>Чи можна встановити підігрів?</strong><span class="small muted">→</span></div>
+        <div class="faq-a muted">Так — ми встановлюємо теплові насоси, газові котли та електричні системи.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="contacts">
+    <h2>Контакти</h2>
+    <p class="lead">Зв'яжіться з нами для безкоштовної консультації або виїзду на об'єкт.</p>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <div style="flex:1;min-width:300px" class="card">
+        <h3>Залишити заявку</h3>
+        <form id="contactForm" onsubmit="submitContact(event)">
+          <input class="input" id="name" placeholder="Ім'я" required style="margin-bottom:8px">
+          <input class="input" id="phone" placeholder="Телефон" required style="margin-bottom:8px">
+          <input class="input" id="email" placeholder="E‑mail (опціонально)" style="margin-bottom:8px">
+          <textarea class="input" id="message" placeholder="Коротко про проєкт" rows="4" style="margin-bottom:8px"></textarea>
+          <div style="display:flex;gap:8px">
+            <button class="btn" type="submit">Надіслати</button>
+            <button type="button" class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="openModal('modalContact')">Потрібна допомога?</button>
+          </div>
+        </form>
+      </div>
+      <div style="flex:1;min-width:260px" class="card">
+        <h3>Наші контакти</h3>
+        <p class="muted">Телефон: <strong>+38 (0XX) XXX‑XX‑XX</strong></p>
+        <p class="muted">E‑mail: <strong>info@aquapolis.ua</strong></p>
+        <p class="muted">Адреса: <strong>м.Дніпро</strong></p>
+        <div style="margin-top:10px">
+          <a class="small" href="#">Політика конфіденційності</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Floating buttons -->
+<button class="calc-btn" onclick="openSlide('calcSlide')">Розрахувати вартість</button>
+<button class="calc-btn" style="right:150px;bottom:18px;background:#0EA5A4" onclick="openSlide('contactSlide')">Швидкий контакт</button>
+
+<!-- Slideout: Calculator -->
+<div id="calcSlide" class="slideout" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Калькулятор попередньої вартості</h3>
+    <button class="close-slide" onclick="closeSlide('calcSlide')">✕</button>
+  </div>
+  <p class="muted small">Отримайте попередній діапазон вартості вашого басейну. Для точного кошторису — замовте виїзд інженера.</p>
+  <form id="calcForm" onsubmit="calcSubmit(event)">
+    <label class="small muted">Тип об'єкта</label>
+    <select id="ctype" class="input" required>
+      <option value="private">Приватний</option>
+      <option value="commercial">Комерційний</option>
+    </select>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="length" class="input" type="number" placeholder="Довжина (м)" min="1" required>
+      <input id="width" class="input" type="number" placeholder="Ширина (м)" min="1" required>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="depth" class="input" type="number" placeholder="Глибина (м)" step="0.1" min="0.5" required>
+      <select id="shell" class="input">
+        <option value="concrete">Бетон</option>
+        <option value="composite">Композит</option>
+        <option value="pp">Поліпропілен</option>
+      </select>
+    </div>
+    <label class="small muted" style="margin-top:8px">Оздоблення</label>
+    <select id="finish" class="input">
+      <option value="mosaic">Мозаїка</option>
+      <option value="tile">Керамограніт</option>
+      <option value="liner">Лайнер</option>
+    </select>
+    <div style="margin-top:10px">
+      <label class="small muted">Додатково</label>
+      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <label style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="heat"> Підігрів</label>
+        <label style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="led"> LED‑підсвітка</label>
+        <label style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="auto"> Автоматика</label>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn" type="submit">Розрахувати</button>
+      <button type="button" class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="openModal('modalContact')">Замовити кошторис</button>
+    </div>
+  </form>
+
+  <div id="calcResult" style="margin-top:14px;display:none" class="card">
+    <h4 style="margin:0 0 8px">Попередній кошторис</h4>
+    <p id="calcText" class="muted small"></p>
+    <div style="margin-top:8px"><button class="btn" onclick="openModal('modalContact')">Отримати детальний кошторис</button></div>
+  </div>
+</div>
+
+<!-- Slideout: Gallery -->
+<div id="gallerySlide" class="slideout" aria-hidden="true" style="width:520px;">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Галерея — басейни та процес будівництва</h3>
+    <button class="close-slide" onclick="closeSlide('gallerySlide')">✕</button>
+  </div>
+  <p class="muted small">Перегляньте фото з наших проєктів та етапів робіт.</p>
+  <div class="gallery-grid" style="margin-top:12px">
+    <img src="images/photo1.jpg" alt="мозаїка">
+    <img src="images/photo2.jpg" alt="будівництво">
+    <img src="images/photo3.jpg" alt="монтаж">
+    <img src="images/photo4.jpg" alt="інтер'єр">
+    <img src="images/photo5.jpg" alt="міні басейн">
+    <img src="images/photo6.jpg" alt="реконструкція">
+  </div>
+  <div style="margin-top:12px;text-align:center">
+    <button class="btn" onclick="openModal('modalPortfolio')">Детальні кейси</button>
+  </div>
+</div>
+
+<!-- Slideout: Portfolio expanded -->
+<div id="portfolioSlide" class="slideout" aria-hidden="true" style="width:680px;">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Розгорнуте портфоліо</h3>
+    <button class="close-slide" onclick="closeSlide('portfolioSlide')">✕</button>
+  </div>
+  <p class="muted small">Детальні описи проєктів, етапи робіт та технічні рішення. Наведіть курсор на фото для опису.</p>
+  <div style="margin-top:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <div style="border-radius:10px;overflow:hidden">
+      <img src="images/photo1.jpg" style="width:100%;height:220px;object-fit:cover">
+      <div style="padding:12px">
+        <h4 style="margin:0">Приватний басейн 8×4 м</h4>
+        <p class="muted small">Мозаїка, підігрів, LED‑підсвітка. Повний цикл робіт: від проєкту до запуску.</p>
+      </div>
+    </div>
+    <div style="border-radius:10px;overflow:hidden">
+      <img src="images/photo2.jpg" style="width:100%;height:220px;object-fit:cover">
+      <div style="padding:12px">
+        <h4 style="margin:0">Армування та бетонування</h4>
+        <p class="muted small">Контроль якості армування, тест на герметичність, фото етапів.</p>
+      </div>
+    </div>
+    <div style="border-radius:10px;overflow:hidden">
+      <img src="images/photo3.jpg" style="width:100%;height:220px;object-fit:cover">
+      <div style="padding:12px">
+        <h4 style="margin:0">Монтаж обладнання</h4>
+        <p class="muted small">Підбір насосів, фільтрів та автоматики з урахуванням енергоефективності.</p>
+      </div>
+    </div>
+    <div style="border-radius:10px;overflow:hidden">
+      <img src="images/photo4.jpg" style="width:100%;height:220px;object-fit:cover">
+      <div style="padding:12px">
+        <h4 style="margin:0">Інтер'єрні рішення</h4>
+        <p class="muted small">Елегантні внутрішні басейни з мозаїкою та декоративними елементами.</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:12px;text-align:center">
+    <button class="btn" onclick="openModal('modalContact')">Замовити подібний проєкт</button>
+  </div>
+</div>
+
+<!-- Slideout: Project details -->
+<div id="projectSlide" class="slideout" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Деталі проєктування</h3>
+    <button class="close-slide" onclick="closeSlide('projectSlide')">✕</button>
+  </div>
+  <p class="muted small">Що входить у проєкт: технічне завдання, геодезія, 3D‑візуалізація, інженерні розрахунки, кошторис.</p>
+  <div style="margin-top:12px">
+    <img src="images/photo7.jpg" alt="3D" class="slide-thumb">
+    <p class="muted small" style="margin-top:8px">3D‑рендери допомагають побачити кінцевий результат ще до початку робіт.</p>
+  </div>
+</div>
+
+<!-- Slideout: Finish materials -->
+<div id="finishSlide" class="slideout" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Матеріали для оздоблення</h3>
+    <button class="close-slide" onclick="closeSlide('finishSlide')">✕</button>
+  </div>
+  <p class="muted small">Мозаїка, керамограніт, натуральний камінь — переваги та приклади застосування.</p>
+  <div style="margin-top:12px" class="gallery-grid">
+    <img src="images/photo8.jpg" alt="mosaic">
+    <img src="images/photo9.jpg" alt="tile">
+    <img src="images/photo10.jpg" alt="stone">
+  </div>
+</div>
+
+<!-- Slideout: Mini examples -->
+<div id="miniSlide" class="slideout" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3 style="margin:0">Міні‑басейни та тераси</h3>
+    <button class="close-slide" onclick="closeSlide('miniSlide')">✕</button>
+  </div>
+  <p class="muted small">Компактні рішення для терас, дахів та невеликих ділянок.</p>
+  <div style="margin-top:12px" class="gallery-grid">
+    <img src="images/photo5.jpg" alt="mini1">
+    <img src="images/photo11.jpg" alt="mini2">
+    <img src="images/photo12.jpg" alt="mini3">
+  </div>
+</div>
+
+<!-- Modals -->
+<div id="modalContact" class="modal" aria-hidden="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1400;align-items:center;justify-content:center;padding:20px">
+  <div class="modal-card">
+    <button style="position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer" onclick="closeModal('modalContact')">✕</button>
+    <h3>Замовити консультацію</h3>
+    <p class="muted small">Заповніть форму — ми зв'яжемося для уточнення деталей.</p>
+    <form onsubmit="submitModalContact(event)">
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input class="input" id="mname" placeholder="Ім'я" required>
+        <input class="input" id="mphone" placeholder="Телефон" required>
+      </div>
+      <div style="margin-top:8px">
+        <input class="input" id="memail" placeholder="E‑mail (опціонально)">
+      </div>
+      <div style="margin-top:8px">
+        <textarea class="input" id="mdesc" placeholder="Коротко про проєкт" rows="4"></textarea>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn" type="submit">Надіслати</button>
+        <button type="button" class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="closeModal('modalContact')">Скасувати</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="modalBuild" class="modal" aria-hidden="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1400;align-items:center;justify-content:center;padding:20px">
+  <div class="modal-card">
+    <button style="position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer" onclick="closeModal('modalBuild')">✕</button>
+    <h3>Процес будівництва чаші</h3>
+    <p class="muted small">Короткий опис етапів: земляні роботи → армування → бетонування → гідроізоляція → оздоблення.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+      <img src="images/photo2.jpg" alt="земляні роботи">
+      <img src="images/photo3.jpg" alt="армування">
+      <img src="images/photo6.jpg" alt="бетонування">
+    </div>
+    <div style="margin-top:12px;text-align:right"><button class="btn" onclick="openModal('modalContact')">Замовити проєкт</button></div>
+  </div>
+</div>
+
+<div id="modalEquip" class="modal" aria-hidden="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1400;align-items:center;justify-content:center;padding:20px">
+  <div class="modal-card">
+    <button style="position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer" onclick="closeModal('modalEquip')">✕</button>
+    <h3>Обладнання та автоматика</h3>
+    <p class="muted small">Фільтраційні системи, теплові насоси, насоси, автоматика дозування хімії.</p>
+    <div style="display:flex;gap:12px;margin-top:12px">
+      <div style="flex:1"><img src="images/photo3.jpg" alt="насос" style="width:100%;height:140px;object-fit:cover;border-radius:8px"></div>
+      <div style="flex:1"><img src="images/photo9.jpg" alt="тепловий насос" style="width:100%;height:140px;object-fit:cover;border-radius:8px"></div>
+      <div style="flex:1"><img src="images/photo10.jpg" alt="фільтр" style="width:100%;height:140px;object-fit:cover;border-radius:8px"></div>
+    </div>
+    <div style="margin-top:12px;text-align:right"><button class="btn" onclick="openModal('modalContact')">Отримати консультацію</button></div>
+  </div>
+</div>
+
+<div id="modalService" class="modal" aria-hidden="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1400;align-items:center;justify-content:center;padding:20px">
+  <div class="modal-card">
+    <button style="position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer" onclick="closeModal('modalService')">✕</button>
+    <h3>Оформлення сервісного пакету</h3>
+    <p class="muted small">Вкажіть контактні дані — менеджер зв'яжеться для підтвердження.</p>
+    <form onsubmit="submitService(event)">
+      <input class="input" id="svc_name" placeholder="Ім'я" required style="margin-top:8px">
+      <input class="input" id="svc_phone" placeholder="Телефон" required style="margin-top:8px">
+      <select id="svc_package" class="input" style="margin-top:8px">
+        <option value="basic">Базовий</option>
+        <option value="premium">Преміум</option>
+        <option value="season">Сезонний</option>
+        <option value="individual">Індивідуальний</option>
+      </select>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn" type="submit">Оформити</button>
+        <button type="button" class="btn" style="background:#fff;color:var(--accent);border:1px solid rgba(11,79,108,0.08)" onclick="closeModal('modalService')">Скасувати</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div class="container" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;justify-content:space-between">
+    <div style="max-width:420px">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="logo" style="width:44px;height:44px">AP</div>
+        <div>
+          <div style="font-weight:800">AquaPolis</div>
+          <div class="small">Будівництво та сервіс басейнів під ключ • <strong>Гарантія</strong></div>
+        </div>
+      </div>
+      <p class="muted small" style="margin-top:12px">© AquaPolis 2026. Всі права захищені.</p>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-weight:700">Послуги</div>
+        <div class="small muted" style="margin-top:8px">Проєктування<br>Будівництво<br>Обслуговування</div>
+      </div>
+      <div>
+        <div style="font-weight:700">Контакти</div>
+        <div class="small muted" style="margin-top:8px">+38 (0XX) XXX‑XX‑XX<br>info@aquapolis.ua<br><strong>м.Дніпро</strong></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Utility: open/close slideouts and modals
+  function openSlide(id){ const el=document.getElementById(id); if(el) el.classList.add('open'); }
+  function closeSlide(id){ const el=document.getElementById(id); if(el) el.classList.remove('open'); }
+  function openModal(id){ const el=document.getElementById(id); if(el) el.style.display='flex'; }
+  function closeModal(id){ const el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  // Quick form
+  function submitQuick(e){
+    e.preventDefault();
+    const name=document.getElementById('qname').value;
+    const phone=document.getElementById('qphone').value;
+    alert('Дякуємо, '+name+'! Ми зв\'яжемося за номером '+phone);
+    document.getElementById('quickForm').reset();
+  }
+
+  // Contact form
+  function submitContact(e){
+    e.preventDefault();
+    const name=document.getElementById('name').value;
+    alert('Дякуємо, '+name+'! Ваш запит прийнято.');
+    document.getElementById('contactForm').reset();
+  }
+
+  // Modal contact
+  function submitModalContact(e){
+    e.preventDefault();
+    const name=document.getElementById('mname').value;
+    alert('Дякуємо, '+name+'! Ми зв\'яжемося найближчим часом.');
+    closeModal('modalContact');
+  }
+
+  // Service form
+  function submitService(e){
+    e.preventDefault();
+    const name=document.getElementById('svc_name').value;
+    alert('Дякуємо, '+name+'! Менеджер зв\'яжеться для підтвердження.');
+    closeModal('modalService');
+  }
+
+  // Contact slide form
+  function submitContactSlide(e){
+    e.preventDefault();
+    const name=document.getElementById('sname').value;
+    alert('Дякуємо, '+name+'! Ми передзвонимо найближчим часом.');
+    closeSlide('contactSlide');
+  }
+
+  // Calculator logic (estimate)
+  function calcSubmit(e){
+    e.preventDefault();
+    const len=Number(document.getElementById('length').value);
+    const wid=Number(document.getElementById('width').value);
+    const depth=Number(document.getElementById('depth').value);
+    const shell=document.getElementById('shell').value;
+    const finish=document.getElementById('finish').value;
+    const heat=document.getElementById('heat') ? document.getElementById('heat').checked : false;
+    const led=document.getElementById('led') ? document.getElementById('led').checked : false;
+    const auto=document.getElementById('auto') ? document.getElementById('auto').checked : false;
+
+    if(!len||!wid||!depth){ alert('Вкажіть розміри'); return; }
+    const volume = len*wid*depth;
+    const basePerM3 = shell==='concrete'? 450 : (shell==='composite'? 380 : 300);
+    let finishMult = finish==='mosaic'? 1.35 : (finish==='tile'? 1.15 : 1.0);
+    let extras = 0;
+    if(heat) extras += 4000;
+    if(led) extras += 800;
+    if(auto) extras += 2500;
+    const raw = Math.round(volume * basePerM3 * finishMult + extras);
+    const min = Math.round(raw*0.9);
+    const max = Math.round(raw*1.2);
+    document.getElementById('calcText').innerText = `Попередній діапазон: ${min.toLocaleString()} — ${max.toLocaleString()} грн. (орієнтовно). Обсяг: ${volume.toFixed(1)} м³.`;
+    document.getElementById('calcResult').style.display='block';
+  }
+
+  // FAQ toggle
+  function toggleFaq(el){
+    const a = el.nextElementSibling;
+    a.classList.toggle('open');
+  }
+
+  // Portfolio: open slideout on scroll into view
+  function isInViewport(el){
+    const rect = el.getBoundingClientRect();
+    return rect.top < (window.innerHeight || document.documentElement.clientHeight) - 120;
+  }
+  const portfolioSection = document.getElementById('portfolio');
+  let portfolioOpened = false;
+  window.addEventListener('scroll', function(){
+    if(!portfolioOpened && isInViewport(portfolioSection)){
+      openSlide('portfolioSlide');
+      portfolioOpened = true;
+    }
+  });
+
+  // Portfolio item click: open modal with details
+  document.querySelectorAll('.portfolio-item').forEach(item=>{
+    item.addEventListener('click', function(){
+      const title = item.getAttribute('data-title') || '';
+      const desc = item.getAttribute('data-desc') || '';
+      // populate modalPortfolio content dynamically
+      const modal = document.getElementById('modalPortfolio');
+      if(modal){
+        modal.querySelector('h3').innerText = title || 'Проєкт';
+        const p = modal.querySelector('.muted.small');
+        if(p) p.innerText = desc || '';
+        openModal('modalPortfolio');
+      }
+    });
+  });
+
+  // Close modals on outside click
+  window.addEventListener('click', function(e){
+    ['modalContact','modalService','modalBuild','modalEquip','modalPortfolio'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.style.display==='flex' && e.target===el) el.style.display='none';
+    });
+  });
+
+  // Close slideouts and modals with ESC
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      document.querySelectorAll('.slideout.open').forEach(s=>s.classList.remove('open'));
+      document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+    }
+  });
+
+  // Accessibility: ensure images have alt; if images missing, show placeholder
+  document.querySelectorAll('img').forEach(img=>{
+    img.onerror = function(){ this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><rect width="100%" height="100%" fill="%23e6e6e6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-family="Arial" font-size="20">Завантажте фото у папку images</text></svg>'; };
+  });
+</script>
+
+</body>
+</html>
